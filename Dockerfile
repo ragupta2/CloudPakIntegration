@@ -3,7 +3,7 @@ FROM fedora:latest
 # MUST SET OC HOSTNAME:PORT
 # In the OCP console, click on the ? (question mark) and then select "Command line tools". Then click 
 # "Download oc for Linux for x86_64" to get the link but only keep the URL prior to "/amd64/linux/oc.tar".
-ARG OC_LOCATION=downloads-openshift-console.cp4intpg-wdc04-a5tbti-8946bbc006b7c6eb0829d088919818bb-0000.us-east.containers.appdomain.cloud/
+ARG OC_LOCATION=https://****************
 
 USER root
 RUN yum -y update \
