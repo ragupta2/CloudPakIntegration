@@ -4,10 +4,10 @@
 
 # Fill in the necessary variables first
 NAMESPACE=cp4i
-ENTTITLEMENT_KEY=***** #add entitlement key
-LOCAL_DOCKER_REGISTRY_HOST=*****  #docker registry URL from nexus
-LOCAL_DOCKER_USER=******   #replace with nexus user
-LOCAL_DOCKER_PASSWORD=*********** #replace with nexus password
+ENTTITLEMENT_KEY=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJJQk0gTWFya2V0cGxhY2UiLCJpYXQiOjE1ODUzMzMxMTcsImp0aSI6IjI4YzQxNzQ5MWJjNTRlOTY4YmFiMWY1MTIyNTA1MzBhIn0.tdFMv1-Tr6dzKB9iIuKwGh1cQE-Zm1ATWxnJaJ8WJI8
+LOCAL_DOCKER_REGISTRY_HOST=nexus-v5-registry-nexus-v5.cp4intpg-wdc04-a5tbti-8946bbc006b7c6eb0829d088919818bb-0000.us-east.containers.appdomain.cloud
+LOCAL_DOCKER_USER=admin
+LOCAL_DOCKER_PASSWORD=password123
 CASE_VERSION=2.5.0 # https://github.com/IBM/cloud-pak/tree/master/repo/case/ibm-cp-integration -> 2.5.0 is CP4I v2021.4.1
 
 # ----------# Environment variables for an offline install
@@ -40,7 +40,7 @@ oc project $NAMESPACE
 # Section 2 - Step 3. This will download the Cloud Pak for Integration installer and image inventory to your host.
 cloudctl case save --repo $CASE_REPO_PATH --case $CASE_NAME --version $CASE_VERSION --outputdir $OFFLINEDIR
 
-# Storing credentials
+# Storing credentials 
 # Section 3.2. - Step 1. This will setup the credentials for your local registry.
 cloudctl case launch --case $HOME/offline/$CASE_ARCHIVE --inventory $CASE_INVENTORY_SETUP --action configure-creds-airgap --args "--registry $LOCAL_DOCKER_REGISTRY_HOST --user $LOCAL_DOCKER_USER --pass $LOCAL_DOCKER_PASSWORD"
 # Also Section 3.2. - Step 1. This command will setup the credentials to access the IBM Entitled Registry (thus the need of the entitlement key)
@@ -62,3 +62,4 @@ cloudctl case launch --case $HOME/offline/${CASE_ARCHIVE} --inventory ${CASE_INV
 # Again to verify the CatalogSource as well as the Operator pods
 oc get pods -n openshift-marketplace
 oc get catalogsource -n openshift-marketplace
+

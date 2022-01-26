@@ -1,0 +1,20 @@
+{
+    "channel": [
+      {
+        "name": "EXT.CONN",
+        "clientConnection": {
+          "connection": [
+            {
+              "host": "mq-nativeha-tls-persistent-ibm-mq-qm-mq.<clusterurl>.us-south.containers.appdomain.cloud",
+              "port": 443
+            }
+          ],
+          "queueManager": "QUICKSTART"
+        },
+        "transmissionSecurity": {
+          "cipherSpecification": "ANY_TLS12"
+        },
+        "type": "clientConnection"
+      }
+    ]
+  }
