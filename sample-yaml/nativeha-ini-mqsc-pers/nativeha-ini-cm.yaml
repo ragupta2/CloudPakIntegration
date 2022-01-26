@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nativeha-ini-configmap
+data:
+  qm.ini: |
+    Channels: 3
+      MaxChannels=300
+      MaxActiveChannels=100
+      MQIBindType=STANDARD

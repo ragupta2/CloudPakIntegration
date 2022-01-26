@@ -1,0 +1,69 @@
+apiVersion: mq.ibm.com/v1beta1
+kind: QueueManager
+metadata:
+  namespace: mq
+  name: nativeha-ini-qm
+spec:
+  license:
+    accept: true
+    license: L-RJON-C7QG3S
+    use: NonProduction
+  securityContext:
+    supplementalGroups:
+      - 99
+  pki:
+    keys:
+      - secret:
+          items:
+            - tls.key
+            - tls.crt
+          secretName: mq-tls-ini-secret
+        name: default
+  web:
+    enabled: true
+  version: 9.2.4.0-r1
+  template:
+    pod:
+      containers:
+        - env:
+            - name: MQSNOAUT
+              value: 'yes'
+          name: qmgr
+  queueManager:
+    ini:
+      - configMap:
+          items:
+            - qm.ini
+          name: nativeha-ini-configmap
+    resources:
+      limits:
+        cpu: 500m
+      requests:
+        cpu: 500m
+    name: QUICKSTART
+    mqsc:
+      - configMap:
+          items:
+            - tls.mqsc
+          name: mq-nativeha-tls-persistent-configmap
+    availability:
+      type: NativeHA
+    storage:
+      defaultClass: ibmc-file-gold-gid
+      persistedData:
+        class: ibmc-file-gold-gid
+        deleteClaim: true
+        enabled: true
+        size: 2Gi
+        type: persistent-claim
+      queueManager:
+        class: ibmc-file-gold-gid
+        deleteClaim: true
+        type: persistent-claim
+        size: 2Gi
+      recoveryLogs:
+        class: ibmc-file-gold-gid
+        deleteClaim: true
+        enabled: true
+        type: persistent-claim
+        size: 2Gi
