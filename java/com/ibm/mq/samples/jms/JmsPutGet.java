@@ -27,7 +27,8 @@ import javax.jms.TextMessage;
 import com.ibm.msg.client.jms.JmsConnectionFactory;
 import com.ibm.msg.client.jms.JmsFactoryFactory;
 import com.ibm.msg.client.wmq.WMQConstants;
-
+// import java.util.Timer;
+// import java.util.TimerTask;
 /**
  * A minimal and simple application for Point-to-point messaging.
  *
@@ -98,13 +99,33 @@ public class JmsPutGet {
 			// Create JMS objects
 			context = cf.createContext();
 			destination = context.createQueue("queue:///" + QUEUE_NAME);
-
-			long uniqueNumber = System.currentTimeMillis() % 1000;
-			TextMessage message = context.createTextMessage("Your lucky number today is " + uniqueNumber);
-
 			producer = context.createProducer();
-			producer.send(destination, message);
-			System.out.println("Sent message:\n" + message);
+
+			while (true){
+				long uniqueNumber = System.currentTimeMillis() % 1000;
+				TextMessage message = context.createTextMessage("Your lucky number today is " + uniqueNumber);
+				producer.send(destination, message);
+				System.out.println("Sent message:\n" + message);
+				recordSuccess();
+				try {
+					Thread.sleep(5000);
+				}
+				catch (Exception e)
+				{
+					System.out.println(e);
+				}
+			}
+
+			// Timer timer = new Timer();
+			// timer.schedule( new TimerTask() {
+			// 	public void run() {
+			// 		long uniqueNumber = System.currentTimeMillis() % 1000;
+			// 		TextMessage message = context.createTextMessage("Your lucky number today is " + uniqueNumber);
+			// 		producer.send(destination, message);
+			// 		System.out.println("Sent message:\n" + message);
+			// 	}
+			// }, 0, 5000);
+			
 
 			// consumer = context.createConsumer(destination); // autoclosable
 			// String receivedMessage = consumer.receiveBody(String.class, 15000); // in ms or 15 seconds
@@ -113,7 +134,7 @@ public class JmsPutGet {
 
             //             context.close();
 
-			recordSuccess();
+			
 		} catch (JMSException jmsex) {
 			recordFailure(jmsex);
 		}
