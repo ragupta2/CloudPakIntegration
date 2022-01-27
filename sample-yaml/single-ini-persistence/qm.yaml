@@ -1,27 +1,47 @@
 apiVersion: mq.ibm.com/v1beta1
 kind: QueueManager
 metadata:
-  name: single-inst-ini-qm
+  name: single-inst-ini-persisted
 spec:
   license:
     accept: true
     license: L-RJON-C7QG3S
+    metric: VirtualProcessorCore
     use: NonProduction
+  pki:
+    keys:
+      - name: default
+        secret:
+          items:
+            - tls.key
+            - tls.crt
+          secretName: mq-tls-secret
   securityContext:
+    initVolumeAsRoot: false
     supplementalGroups:
       - 99
+  web:
+    enabled: true
+  version: 9.2.4.0-r1
   queueManager:
+    metrics:
+      enabled: true
+    ini:
+      - configMap:
+          items:
+            - qm.ini
+          name: single-inst-ini-cm
+    route:
+      enabled: true
     name: QUICKSTART
     mqsc:
       - configMap:
-          name: single-inst-ini-cm
           items:
             - tls.mqsc
-    ini:
-      - configmap:
           name: single-inst-ini-cm
-          items:
-            - qm.ini
+    availability:
+      type: SingleInstance
+      updateStrategy: RollingUpdate
     storage:
       defaultClass: ibmc-file-gold-gid
       defaultDeleteClaim: true
@@ -42,21 +62,3 @@ spec:
         enabled: true
         size: 2Gi
         type: persistent-claim
-  template:
-    pod:
-      containers:
-        - env:
-            - name: MQSNOAUT
-              value: "yes"
-          name: qmgr
-  version: 9.2.4.0-r1
-  web:
-    enabled: true
-  pki:
-    keys:
-      - name: default
-        secret:
-          secretName: mq-tls-secret
-          items:
-            - tls.key
-            - tls.crt
