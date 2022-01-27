@@ -1,0 +1,62 @@
+apiVersion: mq.ibm.com/v1beta1
+kind: QueueManager
+metadata:
+  name: single-inst-ini-qm
+spec:
+  license:
+    accept: true
+    license: L-RJON-C7QG3S
+    use: NonProduction
+  securityContext:
+    supplementalGroups:
+      - 99
+  queueManager:
+    name: QUICKSTART
+    mqsc:
+      - configMap:
+          name: single-inst-ini-cm
+          items:
+            - tls.mqsc
+    ini:
+      - configmap:
+          name: single-inst-ini-cm
+          items:
+            - qm.ini
+    storage:
+      defaultClass: ibmc-file-gold-gid
+      defaultDeleteClaim: true
+      persistedData:
+        class: ibmc-file-gold-gid
+        deleteClaim: true
+        enabled: true
+        size: 2Gi
+        type: persistent-claim
+      queueManager:
+        class: ibmc-file-gold-gid
+        deleteClaim: true
+        size: 2Gi
+        type: persistent-claim
+      recoveryLogs:
+        class: ibmc-file-gold-gid
+        deleteClaim: true
+        enabled: true
+        size: 2Gi
+        type: persistent-claim
+  template:
+    pod:
+      containers:
+        - env:
+            - name: MQSNOAUT
+              value: "yes"
+          name: qmgr
+  version: 9.2.4.0-r1
+  web:
+    enabled: true
+  pki:
+    keys:
+      - name: default
+        secret:
+          secretName: mq-tls-secret
+          items:
+            - tls.key
+            - tls.crt

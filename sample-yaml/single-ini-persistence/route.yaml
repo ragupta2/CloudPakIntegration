@@ -1,0 +1,13 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: channel-ext-conn3-traffic
+spec:
+  host: ext2e-conn3.chl.mq.ibm.com
+  to:
+    kind: Service
+    name: mq-tls-ini-ibm-mq
+  port:
+    targetPort: 1414
+  tls:
+    termination: passthrough
