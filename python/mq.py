@@ -5,14 +5,14 @@ queue_name = 'IN'
 message = 'Hello from Python!'
 
 cd = pymqi.CD()
-cd.ChannelName = 'EXT.CONN'.encode('utf-8')
-cd.ConnectionName = '<your-qm-route>(443)'.encode('utf-8')
+cd.ChannelName = 'EXT.CONN2'.encode('utf-8')
+cd.ConnectionName = 'nativeha-ini-qm-ibm-mq-qm-mq.itzroks-550004s7y8-gwvb8u-4b4a324f027aea19c5cbc0c3275c4656-0000.us-south.containers.appdomain.cloud(443)'.encode('utf-8')
 cd.ChannelType = pymqi.CMQC.MQCHT_CLNTCONN
 cd.TransportType = pymqi.CMQC.MQXPT_TCP
 
 cd.SSLCipherSpec = 'ANY_TLS12'.encode('utf-8')
 sco = pymqi.SCO()
-sco.KeyRepository = '/<path-to-certs>/clientkey'.encode('utf-8')
+sco.KeyRepository = '/Users/jackyng/Desktop/Learning/mq-learning/mq-golang-tls-doc/ssl/clientkey'.encode('utf-8')
 sco.CertificateLabel = 'ibmwebspheremqapp'.encode('utf-8')
 
 qmgr = pymqi.QueueManager(None)
