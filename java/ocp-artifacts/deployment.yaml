@@ -1,0 +1,47 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mq-java-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mq-java-app
+  template:
+    metadata:
+      labels:
+        app: mq-java-app
+    spec:
+      containers:
+        - name: mq-java-app
+          image: image-registry.openshift-image-registry.svc:5000/mq-java/mq-java-app
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: mq-java-app
+  name: mq-java-app
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: mq-java-app
+---
+apiVersion: v1
+kind: Route
+metadata:
+  name: mq-java-route
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: mq-java-app
