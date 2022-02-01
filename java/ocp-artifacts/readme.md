@@ -15,5 +15,12 @@
 oc create secret generic mq-java-tls-secret --from-file=mq-java-tls.jks=/path/to/mq-java-tls.jks
 ```  
 
+- Edit the `mq-qm-cm.yaml` with the values of the QueueManager and apply.
+```
+oc apply -f mq-qm-cm.yaml
+```
+
 - Edit the Deployment yaml if needed to update the correct names of the secret. Apply the Deployment.
-`oc apply -f deployment.yaml`
+```
+oc apply -f deployment.yaml
+```
