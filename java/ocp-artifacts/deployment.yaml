@@ -16,6 +16,9 @@ spec:
       - name: certificate-volume
         secret:
           secretName: mq-java-tls-secret
+          items:
+            - key: mq-java-tls.jks
+              path: mq-java-tls.jks
       containers:
         - name: mq-java-app
           image: image-registry.openshift-image-registry.svc:5000/mq-java/mq-java-app
@@ -25,5 +28,5 @@ spec:
           volumeMounts:
           - name: certificate-volume
             readOnly: true
-            mountPath: "/apps/certs"
+            mountPath: "/app/certs"
       restartPolicy: Always
