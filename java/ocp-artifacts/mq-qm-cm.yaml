@@ -1,0 +1,9 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: mq-java-app-env-cm
+data: 
+  HOST: nativeha-ini-qm-ibm-mq-qm-mq.itzroks-550004s7y8-gwvb8u-4b4a324f027aea19c5cbc0c3275c4656-0000.us-south.containers.appdomain.cloud"
+  CHANNEL: "EXT.CONN2"
+  QMGR: "QUICKSTART"
+  QUEUE_NAME: "IN"
