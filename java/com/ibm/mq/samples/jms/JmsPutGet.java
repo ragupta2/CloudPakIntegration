@@ -34,14 +34,20 @@ public class JmsPutGet {
 	private static int status = 1;
 
 	// Create variables for the connection to MQ
-	private static final String HOST = "nativeha-ini-qm-ibm-mq-qm-mq.itzroks-550004s7y8-gwvb8u-4b4a324f027aea19c5cbc0c3275c4656-0000.us-south.containers.appdomain.cloud"; // Host name or IP address
-	private static final int PORT = 443; // Listener port for your queue manager
-	private static final String CHANNEL = "EXT.CONN2"; // Channel name
-	private static final String QMGR = "QUICKSTART"; // Queue manager name
-	private static final String APP_USER = "app"; // User name that application uses to connect to MQ
-	private static final String APP_PASSWORD = "password"; // Password that the application uses to connect to MQ
-	private static final String QUEUE_NAME = "IN"; // Queue that the application uses to put and get messages to and from
+	// private static final String HOST = "nativeha-ini-qm-ibm-mq-qm-mq.itzroks-550004s7y8-gwvb8u-4b4a324f027aea19c5cbc0c3275c4656-0000.us-south.containers.appdomain.cloud"; // Host name or IP address
+	// private static final int PORT = 443; // Listener port for your queue manager
+	// private static final String CHANNEL = "EXT.CONN2"; // Channel name
+	// private static final String QMGR = "QUICKSTART"; // Queue manager name
+	// private static final String APP_USER = "app"; // User name that application uses to connect to MQ
+	// private static final String APP_PASSWORD = "password"; // Password that the application uses to connect to MQ
+	// private static final String QUEUE_NAME = "IN"; // Queue that the application uses to put and get messages to and from
 
+
+	private static final String HOST = System.getenv("HOST");
+	private static final int PORT = 443;
+	private static final String CHANNEL = System.getenv("CHANNEL");
+	private static final String QMGR = System.getenv("QMGR");
+	private static final String QUEUE_NAME = System.getenv("QUEUE_NAME");
 
 	/**
 	 * Main method

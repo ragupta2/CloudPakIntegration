@@ -29,4 +29,7 @@ spec:
           - name: certificate-volume
             readOnly: true
             mountPath: "/app/certs"
+          envFrom: 
+          - configMapRef:
+              name: mq-java-app-env-cm
       restartPolicy: Always
