@@ -12,10 +12,18 @@ spec:
       labels:
         app: mq-java-app
     spec:
+      volumes:
+      - name: certificate-volume
+        secret:
+          secretName: mq-java-tls-secret
       containers:
         - name: mq-java-app
           image: image-registry.openshift-image-registry.svc:5000/mq-java/mq-java-app
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
+          volumeMounts:
+          - name: certificate-volume
+            readOnly: true
+            mountPath: "/apps/certs"
       restartPolicy: Always
