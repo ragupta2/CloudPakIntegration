@@ -38,8 +38,8 @@ public class JmsPutGet {
 	// private static final int PORT = 443; // Listener port for your queue manager
 	// private static final String CHANNEL = "EXT.CONN2"; // Channel name
 	// private static final String QMGR = "QUICKSTART"; // Queue manager name
-	// private static final String APP_USER = "app"; // User name that application uses to connect to MQ
-	// private static final String APP_PASSWORD = "password"; // Password that the application uses to connect to MQ
+	private static final String APP_USER = "app"; // User name that application uses to connect to MQ
+	private static final String APP_PASSWORD = "password"; // Password that the application uses to connect to MQ
 	// private static final String QUEUE_NAME = "IN"; // Queue that the application uses to put and get messages to and from
 
 
