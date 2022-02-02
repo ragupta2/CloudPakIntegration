@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mq-receiver-tls-configmap
+  namespace: receiver-mq
+data:
+  receiver-tls.mqsc: |
+    DEFINE CHANNEL(QM1.TO.QM2) CHLTYPE(RCVR) TRPTYPE(TCP) SSLCIPH('ANY_TLS12_OR_HIGHER') SSLCAUTH(REQUIRED) DESCR('Receiver channel using TLS from QM1 to QM2')
+    DEFINE QLOCAL('QM2.REMOTE') 
+    ALTER QMGR DEADQ(SYSTEM.DEAD.LETTER.QUEUE)
+   
+# SET CHLAUTH(QM1.TO.QM2) TYPE(BLOCKUSER) USERLIST('nobody') ACTION(ADD

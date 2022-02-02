@@ -1,2 +1,6 @@
 .DS_Store
 certs/
+*.crt
+*.key
+*.jks
+*.kdb

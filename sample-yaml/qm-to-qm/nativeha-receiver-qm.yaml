@@ -1,0 +1,83 @@
+apiVersion: mq.ibm.com/v1beta1
+kind: QueueManager
+metadata:
+  name: nativeha-receiver-qm
+  namespace: receiver-mq
+spec:
+  license:
+    accept: true
+    license: L-RJON-C7QG3S
+    use: NonProduction
+  pki:
+    keys:
+      - secret:
+          items:
+            - tls.key
+            - tls.crt
+          secretName: receiver-mq-tls-secret
+        name: default
+      - secret:
+          items: 
+            - tls.crt
+            - tls.key
+          secretName: sender-mq-tls-secret
+        name: sender
+    trust:
+      - secret:
+          items: 
+            - tls.crt
+            # - tls.key
+          secretName: sender-mq-tls-secret
+        name: sender
+      - secret:
+          items: 
+            - tls.crt
+            # - tls.key
+          secretName: receiver-mq-tls-secret
+        name: receiver
+  web:
+    enabled: true
+  version: 9.2.4.0-r1
+  template:
+    pod:
+      containers:
+        - env:
+            - name: MQSNOAUT
+              value: 'yes'
+          name: qmgr
+  queueManager:
+    resources:
+      limits:
+        cpu: 500m
+      requests:
+        cpu: 500m
+    name: RECEIVERQM
+    mqsc:
+      - configMap:
+          items:
+            - receiver-tls.mqsc
+          name: mq-receiver-tls-configmap
+    availability:
+      type: SingleInstance
+    storage:
+      queueManager:
+        type: ephemeral
+    # storage:
+    #   defaultClass: ibmc-block-gold
+    #   persistedData:
+    #     class: ibmc-block-gold
+    #     deleteClaim: true
+    #     enabled: true
+    #     size: 2Gi
+    #     type: persistent-claim
+    #   queueManager:
+    #     class: ibmc-block-gold
+    #     deleteClaim: true
+    #     type: persistent-claim
+    #     size: 2Gi
+    #   recoveryLogs:
+    #     class: ibmc-block-gold
+    #     deleteClaim: true
+    #     enabled: true
+    #     type: persistent-claim
+    #     size: 2Gi

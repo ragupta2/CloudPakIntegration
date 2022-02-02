@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mq-sender-tls-configmap
+  namespace: sender-mq
+data:
+  sender-tls.mqsc: |
+    DEFINE CHANNEL(QM1.TO.QM2) CHLTYPE(SDR) TRPTYPE(TCP) CONNAME('nativeha-receiver-qm-ibm-mq-qm-receiver-mq.itzroks-550004s7y8-gwvb8u-4b4a324f027aea19c5cbc0c3275c4656-0000.us-south.containers.appdomain.cloud(443)') XMITQ(QM2) SSLCIPH('ANY_TLS12_OR_HIGHER') DESCR('Sender channel using TLS from QM1 to QM2')
+    DEFINE QLOCAL(QM2) USAGE(XMITQ)
+    DEFINE QREMOTE(QM1.REMOTE) RNAME(QM2.REMOTE) RQMNAME(RECEIVERQM) XMITQ(QM2)
+    ALTER QMGR DEADQ(SYSTEM.DEAD.LETTER.QUEUE)
+    START CHANNEL(QM1.TO.QM2)
+
+
+# SET CHLAUTH(QM1.TO.QM2) TYPE(BLOCKUSER) USERLIST('nobody') ACTION(ADD)

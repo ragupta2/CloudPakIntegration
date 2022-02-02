@@ -1,14 +1,14 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: persistent-ini-ext-conn2-traffic
-  namespace: mq
+  name: receiver-qm-to-qm-traffic
+  namespace: receiver-mq
 spec:
-# EXT.CONN
-  host: ext2e-conn2.chl.mq.ibm.com
+# QM1.TO.QM2
+  host: qm12e-to2e-qm2.chl.mq.ibm.com
   to:
     kind: Service
-    name: nativeha-ini-qm-ibm-mq
+    name: nativeha-receiver-qm-ibm-mq
   port:
     targetPort: 1414
   tls:
