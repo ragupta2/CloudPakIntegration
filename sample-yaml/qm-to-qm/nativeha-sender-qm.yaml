@@ -16,25 +16,12 @@ spec:
             - tls.crt
           secretName: sender-mq-tls-secret
         name: default
-      - secret:
-          items: 
-            - tls.crt
-            - tls.key
-          secretName: receiver-mq-tls-secret
-        name: receiver
     trust:
       - secret:
           items: 
             - tls.crt
-            # - tls.key
           secretName: receiver-mq-tls-secret
         name: receiver
-      - secret:
-          items: 
-            - tls.crt
-            # - tls.key
-          secretName: sender-mq-tls-secret
-        name: sender
   web:
     enabled: true
   version: 9.2.4.0-r1

@@ -4,3 +4,7 @@ certs/
 *.key
 *.jks
 *.kdb
+*.crl
+*.rdb
+*.sth
+*.json
