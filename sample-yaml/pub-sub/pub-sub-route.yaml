@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: pubsub-ext-conn-traffic
+  namespace: mq
+spec:
+# PUBSUB.EXT.CONN
+  host: pubsub2e-ext2e-conn.chl.mq.ibm.com
+  to:
+    kind: Service
+    name: pubsub-qm-ibm-mq
+  port:
+    targetPort: 1414
+  tls:
+    termination: passthrough

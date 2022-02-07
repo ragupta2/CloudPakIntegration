@@ -8,3 +8,4 @@ certs/
 *.rdb
 *.sth
 *.json
+*.zip
