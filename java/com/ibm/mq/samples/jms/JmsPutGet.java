@@ -33,14 +33,15 @@ public class JmsPutGet {
 	// System exit status value (assume unset value to be 1)
 	private static int status = 1;
 
-	private static final String APP_USER = "app"; // User name that application uses to connect to MQ
-	private static final String APP_PASSWORD = "password"; // Password that the application uses to connect to MQ
-
-	private static final String HOST = System.getenv("HOST");
-	private static final int PORT = 443;
+	// private static final String HOST = System.getenv("HOST");
+	// private static final int PORT = Integer.parseInt(System.getenv("PORT"));
+	private static final String CONN_STR = System.getenv("CONN_STR");
 	private static final String CHANNEL = System.getenv("CHANNEL");
 	private static final String QMGR = System.getenv("QMGR");
 	private static final String QUEUE_NAME = System.getenv("QUEUE_NAME");
+	private static final String CIPHER_SUITE = System.getenv("CIPHER_SUITE");
+	private static final String APP_USER = System.getenv("APP_USER"); // User name that application uses to connect to MQ
+	private static final String APP_PASSWORD = System.getenv("APP_PASSWORD"); // Password that the application uses to connect to MQ
 
 	/**
 	 * Main method
@@ -60,8 +61,10 @@ public class JmsPutGet {
 			JmsConnectionFactory cf = ff.createConnectionFactory();
 
 			// Set the properties
-			cf.setStringProperty(WMQConstants.WMQ_HOST_NAME, HOST);
-			cf.setIntProperty(WMQConstants.WMQ_PORT, PORT);
+			// cf.setStringProperty(WMQConstants.WMQ_HOST_NAME, HOST);
+			// cf.setIntProperty(WMQConstants.WMQ_PORT, PORT);
+			cf.setStringProperty(WMQConstants.WMQ_CONNECTION_NAME_LIST, CONN_STR);
+			cf.setIntProperty(WMQConstants.WMQ_CONNECTION_MODE, WMQConstants.WMQ_CM_CLIENT);
 			cf.setStringProperty(WMQConstants.WMQ_CHANNEL, CHANNEL);
 			cf.setIntProperty(WMQConstants.WMQ_CONNECTION_MODE, WMQConstants.WMQ_CM_CLIENT);
 			cf.setStringProperty(WMQConstants.WMQ_QUEUE_MANAGER, QMGR);
@@ -69,7 +72,7 @@ public class JmsPutGet {
 			cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
 			cf.setStringProperty(WMQConstants.USERID, APP_USER);
 			cf.setStringProperty(WMQConstants.PASSWORD, APP_PASSWORD);
-			cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, "*TLS12");
+			cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, CIPHER_SUITE);
 
 			// Create JMS objects
 			context = cf.createContext();

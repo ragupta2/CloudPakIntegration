@@ -15,9 +15,8 @@
 */
 
 package com.ibm.mq.samples.jms;
-
+import java.util.Random;
 import java.util.logging.*;
-
 import javax.jms.Destination;
 import javax.jms.JMSProducer;
 import javax.jms.JMSContext;
@@ -25,14 +24,10 @@ import javax.jms.Message;
 import javax.jms.TextMessage;
 import javax.jms.JMSRuntimeException;
 import javax.jms.JMSException;
-
 import com.ibm.msg.client.jms.JmsConnectionFactory;
 import com.ibm.msg.client.jms.JmsFactoryFactory;
 import com.ibm.msg.client.wmq.WMQConstants;
-
 import com.ibm.mq.jms.MQDestination;
-
-// import com.ibm.mq.samples.jms.SampleEnvSetter;
 
 public class JmsPub {
   private static final Level LOGLEVEL = Level.ALL;
@@ -74,12 +69,13 @@ public class JmsPub {
     setTargetClient(destination);
 
     publisher = context.createProducer();
+    
 
     for (int i = 0; i < 20; i++) {
       logger.info("Publishing messages.\n");
 
       try {
-        publisher.send(destination, "this is a message");
+        publisher.send(destination, "Random number: " + Math.random());
         logger.info("message was sent");
         Thread.sleep(2000);
       } catch (JMSRuntimeException jmsex) {
@@ -96,25 +92,14 @@ public class JmsPub {
   }
 
   private static void mqConnectionVariables() {
-    // SampleEnvSetter env = new SampleEnvSetter();
     int index = 0;
-
-    // ConnectionString = env.getConnectionString();
-    // CHANNEL = env.getEnvValue("CHANNEL", index);
-    // QMGR = env.getEnvValue("QMGR", index);
-    // APP_USER = env.getEnvValue("APP_USER", index);
-    // APP_PASSWORD = env.getEnvValue("APP_PASSWORD", index);
-    // TOPIC_NAME = env.getEnvValue("TOPIC_NAME", index);
-    // CIPHER_SUITE = env.getEnvValue("CIPHER_SUITE", index);
-
-    ConnectionString = "pubsub-qm-ibm-mq-qm-mq.itzroks-550004s7y8-eo626g-4b4a324f027aea19c5cbc0c3275c4656-0000.us-south.containers.appdomain.cloud(443)";
-    CHANNEL = "PUBSUB.EXT.CONN";
-    QMGR = "PUBSUBQM";
-    APP_USER = "app";
-    APP_PASSWORD = "password";
-    TOPIC_NAME = "pubsubtopic";
-    CIPHER_SUITE = "*TLS12";
-
+    ConnectionString = System.getenv("CONN_STR");
+    CHANNEL = System.getenv("CHANNEL");
+    QMGR = System.getenv("QMGR");
+    APP_USER = System.getenv("APP_USER");
+    APP_PASSWORD = System.getenv("APP_PASSWORD");
+    TOPIC_NAME = System.getenv("TOPIC_NAME");
+    CIPHER_SUITE = System.getenv("CIPHER_SUITE");
     // CCDTURL = env.getCheckForCCDT();
   }
 

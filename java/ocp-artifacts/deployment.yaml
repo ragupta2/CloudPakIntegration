@@ -13,23 +13,23 @@ spec:
         app: mq-java-app
     spec:
       volumes:
-      - name: certificate-volume
-        secret:
-          secretName: mq-java-tls-secret
-          items:
-            - key: mq-java-tls.jks
-              path: mq-java-tls.jks
+        - name: certificate-volume
+          secret:
+            secretName: mq-java-tls-secret
+            items:
+              - key: mq-java-tls.jks
+                path: mq-java-tls.jks
       containers:
         - name: mq-java-app
-          image: image-registry.openshift-image-registry.svc:5000/mq-java/mq-java-app
+          image: image-registry.openshift-image-registry.svc:5000/rp/mq-java-app
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           volumeMounts:
-          - name: certificate-volume
-            readOnly: true
-            mountPath: "/app/certs"
-          envFrom: 
-          - configMapRef:
-              name: mq-java-app-env-cm
+            - name: certificate-volume
+              readOnly: true
+              mountPath: "/app/certs"
+          envFrom:
+            - configMapRef:
+                name: mq-java-app-env-cm
       restartPolicy: Always
