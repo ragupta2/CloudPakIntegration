@@ -13,7 +13,7 @@ spec:
     # sourceSecret:
     #   name: gitsecret
   strategy:
-    type: Docker.pub
+    type: Docker
     dockerStrategy:
       dockerfilePath: Dockerfile.pub # Look for Dockerfile in: gitUri/contextDir/dockerfilePath
   output:
