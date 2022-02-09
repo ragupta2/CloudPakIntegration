@@ -1,0 +1,10 @@
+FROM openjdk:11
+
+WORKDIR /app
+
+COPY . .
+
+RUN javac -cp ./com.ibm.mq.allclient-9.2.4.0.jar:./javax.jms-api-2.0.1.jar:./json-simple-1.1.1.jar:. com/ibm/mq/samples/jms/JmsSub.java
+
+CMD ["java", "-Djavax.net.ssl.trustStoreType=jks", "-Djavax.net.ssl.trustStore=/app/certs/sender-tls.jks", "-Djavax.net.ssl.trustStorePassword=password", "-Dcom.ibm.mq.cfg.useIBMCipherMappings=false", "-cp", "./com.ibm.mq.allclient-9.2.4.0.jar:./javax.jms-api-2.0.1.jar:./org.json-20120521.jar:.","com.ibm.mq.samples.jms.JmsSub"]
+

@@ -9,3 +9,5 @@ certs/
 *.sth
 *.json
 *.zip
+*.jks
+*.pfx
