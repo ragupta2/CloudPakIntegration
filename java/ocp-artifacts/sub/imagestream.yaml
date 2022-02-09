@@ -1,0 +1,7 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    application: mq-sub-app
+  name: mq-sub-app
+  # namespace:

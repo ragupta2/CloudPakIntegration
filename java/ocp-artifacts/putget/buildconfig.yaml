@@ -1,0 +1,22 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: mq-put-get-build
+  labels:
+    app: mq-put-get
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/ragupta2/CloudPakIntegration
+    contextDir: "java"
+    # sourceSecret:
+    #   name: gitsecret
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile.put # Look for Dockerfile in: gitUri/contextDir/dockerfilePath
+  output:
+    to:
+      kind: ImageStreamTag
+      name: mq-put-get:latest

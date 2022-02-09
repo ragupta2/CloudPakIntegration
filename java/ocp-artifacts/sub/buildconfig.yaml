@@ -1,0 +1,22 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: mq-sub-app-build
+  labels:
+    app: mq-sub
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/ragupta2/CloudPakIntegration
+    contextDir: "java"
+    # sourceSecret:
+    #   name: gitsecret
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile.sub # Look for Dockerfile in: gitUri/contextDir/dockerfilePath
+  output:
+    to:
+      kind: ImageStreamTag
+      name: mq-sub-app:latest

@@ -1,16 +1,16 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: mq-java-app
+  name: mq-sub-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mq-java-app
+      app: mq-sub-app
   template:
     metadata:
       labels:
-        app: mq-java-app
+        app: mq-sub-app
     spec:
       volumes:
         - name: certificate-volume
@@ -20,8 +20,8 @@ spec:
               - key: mq-java-tls.jks
                 path: mq-java-tls.jks
       containers:
-        - name: mq-java-app
-          image: image-registry.openshift-image-registry.svc:5000/rp/mq-java-app
+        - name: mq-sub-app
+          image: image-registry.openshift-image-registry.svc:5000/rp/mq-sub-app
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -31,5 +31,5 @@ spec:
               mountPath: "/app/certs"
           envFrom:
             - configMapRef:
-                name: mq-java-app-env-cm
+                name: mq-sub-app-env-cm
       restartPolicy: Always

@@ -1,0 +1,35 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mq-pub-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mq-pub-app
+  template:
+    metadata:
+      labels:
+        app: mq-pub-app
+    spec:
+      volumes:
+        - name: certificate-volume
+          secret:
+            secretName: mq-java-tls-secret
+            items:
+              - key: mq-java-tls.jks
+                path: mq-java-tls.jks
+      containers:
+        - name: mq-pub-app
+          image: image-registry.openshift-image-registry.svc:5000/rp/mq-pub-app
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: certificate-volume
+              readOnly: true
+              mountPath: "/app/certs"
+          envFrom:
+            - configMapRef:
+                name: mq-pub-app-env-cm
+      restartPolicy: Always
