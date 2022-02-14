@@ -1,24 +1,27 @@
 apiVersion: mq.ibm.com/v1beta1
 kind: QueueManager
 metadata:
-  name: custom-mq
   namespace: mq
+  name: custom-mq
 spec:
   license:
     accept: true
     license: L-RJON-C7QG3S
     use: NonProduction
-  queueManager:
-    image: image-registry.openshift-image-registry.svc:5000/custom-qm-app:latest
-    name: QUICKSTART
-    resources:
-      limits:
-        cpu: 500m
-      requests:
-        cpu: 500m
-    storage:
-      queueManager:
-        type: ephemeral
+  pki:
+    keys:
+      - secret:
+          items:
+            - tls.key
+            - tls.crt
+          secretName: pubsub-mq-tls-secret
+        name: default
+  securityContext:
+    supplementalGroups:
+      - 99
+  web:
+    enabled: true
+  version: 9.2.4.0-r1
   template:
     pod:
       containers:
@@ -26,6 +29,31 @@ spec:
             - name: MQSNOAUT
               value: 'yes'
           name: qmgr
-  version: 9.2.4.0-r1
-  web:
-    enabled: true
+  queueManager:
+    image: image-registry.openshift-image-registry.svc:5000/mq/custom-qm-app:latest
+    resources:
+      limits:
+        cpu: 500m
+      requests:
+        cpu: 500m
+    name: CUSTOMQM
+    mqsc:
+      - configMap:
+          items:
+            - custom.mqsc
+          name: custom-mq-configmap
+    availability:
+      type: NativeHA
+    storage:
+      defaultClass: ibmc-block-gold
+      persistedData:
+        class: ibmc-block-gold
+        enabled: true
+        type: persistent-claim
+      queueManager:
+        class: ibmc-block-gold
+        type: persistent-claim
+      recoveryLogs:
+        class: ibmc-block-gold
+        enabled: true
+        type: persistent-claim

@@ -1,0 +1,22 @@
+Patterns=10.1.*,172.20.31.*,127.0.?.1;
+Userids=xxx,yyy,zzz*,etc,mrmq,root,us???mq;
+BlockMqmUsers=Y;
+#-----------------------------------------------------------------
+# Description of security specification:
+# This specification will allow:
+# - connections from 10.1.*, 172.20.31, and 127.0.0.1, 127.0.1.1, ... 127.0.9.1
+# Networks. Entries are separated using comma(,)
+# - allow userids: xxx, yyy, etc, mqm and mrmq. Together with users
+# starting with zzz<something> and users beginning with us<three chars>mq.
+#
+# - BlockMqmUsers=Y; means that following users are blocked: mqm,
+# MUSR_MQADMIN and musr_mqadmin.
+# All specs must end with a semicolon ; anything after ; is parsed as a comment
+# Important:
+# If you specify Patterns twice they are concatenated, so they are all used
+# for matching.
+#
+# It's very important that all specs are terminated with semicolon(;) otherwise
+# you will receive connection refused. Because I think it's best only to use
+# positive error-free identification
+# The patterns are separated using comma(,) This is also important to remember
