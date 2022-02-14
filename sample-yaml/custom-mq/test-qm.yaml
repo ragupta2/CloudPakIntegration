@@ -30,7 +30,7 @@ spec:
               value: 'yes'
           name: qmgr
   queueManager:
-    image: image-registry.openshift-image-registry.svc:5000/mq/custom-qm-app:latest
+    image: image-registry.openshift-image-registry.svc:5000/mq/custom-qm:latest
     resources:
       limits:
         cpu: 500m
@@ -43,17 +43,25 @@ spec:
             - custom.mqsc
           name: custom-mq-configmap
     availability:
-      type: NativeHA
+      type: SingleInstance
     storage:
-      defaultClass: ibmc-block-gold
-      persistedData:
-        class: ibmc-block-gold
-        enabled: true
-        type: persistent-claim
       queueManager:
-        class: ibmc-block-gold
-        type: persistent-claim
-      recoveryLogs:
-        class: ibmc-block-gold
-        enabled: true
-        type: persistent-claim
+        type: ephemeral
+    # availability:
+    #   type: NativeHA
+    # storage:
+    #   defaultClass: ibmc-block-gold
+    #   persistedData:
+    #     class: ibmc-block-gold
+    #     deleteClaim: true
+    #     enabled: true
+    #     type: persistent-claim
+    #   queueManager:
+    #     class: ibmc-block-gold
+    #     deleteClaim: true
+    #     type: persistent-claim
+    #   recoveryLogs:
+    #     class: ibmc-block-gold
+    #     deleteClaim: true
+    #     enabled: true
+    #     type: persistent-claim

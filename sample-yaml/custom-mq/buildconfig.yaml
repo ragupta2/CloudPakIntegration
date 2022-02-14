@@ -1,7 +1,7 @@
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
-  name: custom-qm-app-build
+  name: custom-qm-build
   labels:
     app: custom-qm
 spec:
@@ -21,4 +21,4 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: custom-qm-app:latest
+      name: custom-qm:latest
