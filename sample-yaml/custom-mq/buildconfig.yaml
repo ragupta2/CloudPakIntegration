@@ -8,7 +8,7 @@ spec:
   source:
     type: Git
     git:
-      uri: https://github.com/ragupta2/CloudPakIntegration/test
+      uri: https://github.com/ragupta2/CloudPakIntegration/
     contextDir: "sample-yaml/custom-mq"
     # sourceSecret: 
     #   name: gitsecret
@@ -16,7 +16,7 @@ spec:
     type: Docker                      
     dockerStrategy:
       dockerfilePath: Dockerfile    # Look for Dockerfile in: gitUri/contextDir/dockerfilePath
-    pullSecret:
+      pullSecret:
         name: ibm-entitlement-key
   output:
     to:

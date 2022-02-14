@@ -5,7 +5,7 @@ metadata:
   namespace: mq
 spec:
   license:
-    accept: false
+    accept: true
     license: L-RJON-C7QG3S
     use: NonProduction
   queueManager:
