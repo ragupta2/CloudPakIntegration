@@ -1,0 +1,24 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: custom-qm-app-build
+  labels:
+    app: custom-qm
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/ragupta2/CloudPakIntegration/test
+    contextDir: "sample-yaml/custom-mq"
+    # sourceSecret: 
+    #   name: gitsecret
+  strategy:
+    type: Docker                      
+    dockerStrategy:
+      dockerfilePath: Dockerfile    # Look for Dockerfile in: gitUri/contextDir/dockerfilePath
+    pullSecret:
+        name: ibm-entitlement-key
+  output:
+    to:
+      kind: ImageStreamTag
+      name: custom-qm-app:latest
