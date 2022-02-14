@@ -1,4 +1,4 @@
-FROM cp.icr.io/cp/ibm-mqadvanced-server-integration:9.2.0.1-r1
+FROM cp.icr.io/cp/ibm-mqadvanced-server-integration:9.2.4.0-r1
 
 COPY blockip/ /opt/mqm
 
