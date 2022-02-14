@@ -1,10 +1,9 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: persistent-ext-conn2-traffic
-  namespace: mq
+  name: persistent-ext-connrp-traffic
 spec:
-  host: ext2e-conn2.chl.mq.ibm.com
+  host: ext2e-connrp.chl.mq.ibm.com
   to:
     kind: Service
     name: mq-nativeha-tls-persistent-ibm-mq

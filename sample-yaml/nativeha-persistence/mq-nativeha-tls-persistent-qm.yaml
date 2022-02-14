@@ -1,7 +1,6 @@
 apiVersion: mq.ibm.com/v1beta1
 kind: QueueManager
 metadata:
-  namespace: mq
   name: mq-nativeha-tls-persistent
 spec:
   license:
@@ -14,22 +13,13 @@ spec:
           items:
             - tls.key
             - tls.crt
-          secretName: mq-tls-secret
+          secretName: sender-mq-tls-secret
         name: default
-  securityContext:
-    supplementalGroups:
-      - 99
   web:
     enabled: true
   version: 9.2.4.0-r1
-  template:
-    pod:
-      containers:
-        - env:
-            - name: MQSNOAUT
-              value: 'yes'
-          name: qmgr
   queueManager:
+    image: image-registry.openshift-image-registry.svc:5000/rp-sender/qm-custom
     resources:
       limits:
         cpu: 500m
@@ -44,15 +34,19 @@ spec:
     availability:
       type: NativeHA
     storage:
-      defaultClass: ibmc-file-gold-gid
+      defaultClass: ibmc-block-gold
       persistedData:
-        class: ibmc-file-gold-gid
+        class: ibmc-block-gold
+        deleteClaim: true
         enabled: true
         type: persistent-claim
       queueManager:
-        class: ibmc-file-gold-gid
-        type: persistent-claim
-      recoveryLogs:
-        class: ibmc-file-gold-gid
+        class: ibmc-block-gold
         enabled: true
         type: persistent-claim
+        deleteClaim: true
+      recoveryLogs:
+        class: ibmc-block-gold
+        enabled: true
+        type: persistent-claim
+        deleteClaim: true
