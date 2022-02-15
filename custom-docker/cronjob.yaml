@@ -25,5 +25,5 @@ spec:
                 - oc whoami
                 - oc project rp-sender
                 - oc exec -it mq-nativeha-tls-persistent-ibm-mq-0 bash
-                - dmpmqcfg > /opt/mqm/exits/BlockIP2/blockip.txt
+                - ./test.sh
           restartPolicy: OnFailure

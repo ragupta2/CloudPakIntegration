@@ -19,7 +19,7 @@ spec:
     enabled: true
   version: 9.2.4.0-r1
   queueManager:
-    image: image-registry.openshift-image-registry.svc:5000/rp-sender/new-qm-2:v4
+    image: image-registry.openshift-image-registry.svc:5000/rp-sender/new-qm-2:v5
     resources:
       limits:
         cpu: 500m
@@ -32,21 +32,44 @@ spec:
             - tls.mqsc
           name: mq-nativeha-tls-persistent-configmap
     availability:
-      type: NativeHA
+      type: SingleInstance
     storage:
-      defaultClass: ibmc-block-gold
-      persistedData:
-        class: ibmc-block-gold
-        deleteClaim: true
-        enabled: true
-        type: persistent-claim
       queueManager:
-        class: ibmc-block-gold
-        enabled: true
-        type: persistent-claim
-        deleteClaim: true
-      recoveryLogs:
-        class: ibmc-block-gold
-        enabled: true
-        type: persistent-claim
-        deleteClaim: true
+        type: ephemeral
+    # availability:
+    #   type: NativeHA
+    # storage:
+    #   defaultClass: ibmc-block-gold
+    #   persistedData:
+    #     class: ibmc-block-gold
+    #     deleteClaim: true
+    #     enabled: true
+    #     type: persistent-claim
+    #   queueManager:
+    #     class: ibmc-block-gold
+    #     deleteClaim: true
+    #     type: persistent-claim
+    #   recoveryLogs:
+    #     class: ibmc-block-gold
+    #     deleteClaim: true
+    #     enabled: true
+    #     type: persistent-claim
+    # availability:
+    #   type: NativeHA
+    # storage:
+    #   defaultClass: ibmc-block-gold
+    #   persistedData:
+    #     class: ibmc-block-gold
+    #     deleteClaim: true
+    #     enabled: true
+    #     type: persistent-claim
+    #   queueManager:
+    #     class: ibmc-block-gold
+    #     enabled: true
+    #     type: persistent-claim
+    #     deleteClaim: true
+    #   recoveryLogs:
+    #     class: ibmc-block-gold
+    #     enabled: true
+    #     type: persistent-claim
+    #     deleteClaim: true
