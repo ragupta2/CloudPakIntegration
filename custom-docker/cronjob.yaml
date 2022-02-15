@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sample-cronjob
+spec:
+  schedule: "*/1 * * * *" #runs every min
+  concurrencyPolicy: "Replace"
+  startingDeadlineSeconds: 200
+  suspend: false
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: default
+          containers:
+            - name: oc-cli
+              image: quay.io/openshift/origin-cli
+              command:
+                - /bin/sh
+                - -c
+                - unset KUBECONFIG
+                - oc login --token=sha256~NwT3HWLO8UpV94X_ZhwX5Ygg3zUEWwbwJlFO74SNgF8 --server=https://c100-e.us-south.containers.cloud.ibm.com:32033
+                - oc whoami
+                - oc project rp-sender
+                - oc exec -it mq-nativeha-tls-persistent-ibm-mq-0 bash
+                - dmpmqcfg > /opt/mqm/exits/BlockIP2/blockip.txt
+          restartPolicy: OnFailure
