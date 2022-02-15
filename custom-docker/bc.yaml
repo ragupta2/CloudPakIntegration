@@ -21,4 +21,4 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: new-qm-2
+      name: new-qm-2:latest
