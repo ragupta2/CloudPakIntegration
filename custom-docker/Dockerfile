@@ -14,4 +14,4 @@ WORKDIR /app
 RUN chown -R 1001:0 /opt/mqm/exits/
 COPY --chown=1001:0 BlockIP2 /opt/mqm/exits/BlockIP2
 COPY --chown=1001:0 blockip2.txt /opt/mqm/exits
-
+USER 1001
