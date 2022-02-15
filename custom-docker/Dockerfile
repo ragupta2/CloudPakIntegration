@@ -10,7 +10,7 @@ FROM cp.icr.io/cp/ibm-mqadvanced-server-integration:9.2.4.0-r1
 # COPY --from=builder1 /usr/lib64 /usr/lib64
 
 USER 0
-WORKDIR /app
+WORKDIR /opt/mqm/exits/
 RUN chown -R 1001:0 /opt/mqm/exits/
 COPY --chown=1001:0 BlockIP2 /opt/mqm/exits/BlockIP2
 COPY --chown=1001:0 blockip2.txt /opt/mqm/exits
