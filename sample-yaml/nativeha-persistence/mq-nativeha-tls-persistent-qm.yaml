@@ -19,7 +19,7 @@ spec:
     enabled: true
   version: 9.2.4.0-r1
   queueManager:
-    image: image-registry.openshift-image-registry.svc:5000/rp-sender/qm-custom
+    image: image-registry.openshift-image-registry.svc:5000/rp-sender/new-qm-2:v1
     resources:
       limits:
         cpu: 500m
