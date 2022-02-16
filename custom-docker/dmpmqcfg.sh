@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 oc login --token=<token> --server=https://c100-e.us-south.containers.cloud.ibm.com:32033
 unset KUBECONFIG
 oc whoami

@@ -1,1 +1,1 @@
-i am inside BLOCKIP2 folder
+dummy value1

@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: start-channel-job
+spec:
+  schedule: "*/1 * * * *" #runs every min
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: default
+          containers:
+            - name: oc-cli
+              image: quay.io/openshift/origin-cli
+              command: ["./etc/config/start-chl.sh", "sleep 50000000"]
+              env:
+                - name: OCP_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: env-secret
+                      key: OCP_USER
+                - name: OCP_PASS
+                  valueFrom:
+                    secretKeyRef:
+                      name: env-secret
+                      key: OCP_PASS
+              # envFrom:
+              #   - configMapRef:
+              #     name: env-cm
+              securityContext:
+                privileged: true
+              volumeMounts:
+                - mountPath: /etc/config
+                  name: sample-vol
+          volumes:
+            - name: sample-vol
+              configMap:
+                name: start-chl
+                defaultMode: 0777
+          restartPolicy: OnFailure

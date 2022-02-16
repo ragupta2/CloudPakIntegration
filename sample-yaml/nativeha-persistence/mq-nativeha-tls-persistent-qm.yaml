@@ -1,7 +1,7 @@
 apiVersion: mq.ibm.com/v1beta1
 kind: QueueManager
 metadata:
-  name: mq-nativeha-tls-persistent
+  name: mq-nativeha-tls-persist
 spec:
   license:
     accept: true
@@ -31,45 +31,45 @@ spec:
           items:
             - tls.mqsc
           name: mq-nativeha-tls-persistent-configmap
+    # availability:
+    #   type: SingleInstance
+    # storage:
+    #   queueManager:
+    #     type: ephemeral
     availability:
-      type: SingleInstance
+      type: NativeHA
     storage:
+      defaultClass: ibmc-block-gold
+      persistedData:
+        class: ibmc-block-gold
+        deleteClaim: true
+        enabled: true
+        type: persistent-claim
       queueManager:
-        type: ephemeral
-    # availability:
-    #   type: NativeHA
-    # storage:
-    #   defaultClass: ibmc-block-gold
-    #   persistedData:
-    #     class: ibmc-block-gold
-    #     deleteClaim: true
-    #     enabled: true
-    #     type: persistent-claim
-    #   queueManager:
-    #     class: ibmc-block-gold
-    #     deleteClaim: true
-    #     type: persistent-claim
-    #   recoveryLogs:
-    #     class: ibmc-block-gold
-    #     deleteClaim: true
-    #     enabled: true
-    #     type: persistent-claim
-    # availability:
-    #   type: NativeHA
-    # storage:
-    #   defaultClass: ibmc-block-gold
-    #   persistedData:
-    #     class: ibmc-block-gold
-    #     deleteClaim: true
-    #     enabled: true
-    #     type: persistent-claim
-    #   queueManager:
-    #     class: ibmc-block-gold
-    #     enabled: true
-    #     type: persistent-claim
-    #     deleteClaim: true
-    #   recoveryLogs:
-    #     class: ibmc-block-gold
-    #     enabled: true
-    #     type: persistent-claim
-    #     deleteClaim: true
+        class: ibmc-block-gold
+        deleteClaim: true
+        type: persistent-claim
+      recoveryLogs:
+        class: ibmc-block-gold
+        deleteClaim: true
+        enabled: true
+        type: persistent-claim
+    availability:
+      type: NativeHA
+    storage:
+      defaultClass: ibmc-block-gold
+      persistedData:
+        class: ibmc-block-gold
+        deleteClaim: true
+        enabled: true
+        type: persistent-claim
+      queueManager:
+        class: ibmc-block-gold
+        enabled: true
+        type: persistent-claim
+        deleteClaim: true
+      recoveryLogs:
+        class: ibmc-block-gold
+        enabled: true
+        type: persistent-claim
+        deleteClaim: true
