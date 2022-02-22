@@ -1,0 +1,24 @@
+{
+  "channel": [
+    {
+      "general": {
+        "description": "MQ channel details"
+      },
+      "name": "MTLSQMCHL",
+      "clientConnection": {
+        "connection": [
+          {
+            "host": "custom-web-console-cp4i-ibm-mq-qm-rp-sender.itzroks-550004s7y8-eo626g-4b4a324f027aea19c5cbc0c3275c4656-0000.us-south.containers.appdomain.cloud",
+            "port": 443
+          }
+        ],
+        "queueManager": "QUICKSTART"
+      },
+      "transmissionSecurity": {
+        "cipherSpecification": "ANY_TLS12_OR_HIGHER",
+        "certificateLabel": "aceclient"
+      },
+      "type": "clientConnection"
+    }
+  ]
+}

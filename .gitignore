@@ -1,13 +1,13 @@
 .DS_Store
 certs/
-*.crt
-*.key
-*.jks
-*.kdb
-*.crl
-*.rdb
-*.sth
-*.json
-*.zip
-*.jks
-*.pfx
+# *.crt
+# *.key
+# *.jks
+# *.kdb
+# *.crl
+# *.rdb
+# *.sth
+# *.json
+# *.zip
+# *.jks
+# *.pfx
