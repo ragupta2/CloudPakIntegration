@@ -1,0 +1,348 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: customwebmqsc
+  namespace: rp-sender
+data:
+  mq.mqsc: |-
+    define ql(APPQ)
+    DEFINE CHANNEL(MTLSQMCHL) CHLTYPE(SVRCONN) TRPTYPE(TCP) SSLCAUTH(REQUIRED) SSLCIPH('ANY_TLS12_OR_HIGHER')
+    ALTER AUTHINFO(SYSTEM.DEFAULT.AUTHINFO.IDPWOS) AUTHTYPE(IDPWOS) ADOPTCTX(YES) CHCKCLNT(OPTIONAL) CHCKLOCL(OPTIONAL) AUTHENMD(OS)
+    SET CHLAUTH('MTLSQMCHL') TYPE(SSLPEERMAP) SSLPEER('CN=application1,OU=app team1') USERSRC(MAP) MCAUSER('app1') ACTION(ADD)
+    REFRESH SECURITY TYPE(CONNAUTH)
+    SET AUTHREC PRINCIPAL('app1') OBJTYPE(QMGR) AUTHADD(CONNECT,INQ)
+    SET AUTHREC PROFILE('APPQ') PRINCIPAL('app1') OBJTYPE(QUEUE) AUTHADD(BROWSE,GET,INQ,PUT)
+  mq.ini: |-
+    Service:
+      Name=AuthorizationService
+      EntryPoints=14
+      SecurityPolicy=UserExternal
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  name: customwebcert
+  namespace: rp-sender
+data:
+  tls.key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktjd2dnU2pBZ0VBQW9JQkFRRG5kNFZTQk9jWUdzRFEKanQwajNwRHYzOC9JZ2I2OWplNEdEQzZiN3lwVWJlUk8xMU5NY05ISU12Y2x1Y1V4TVFkUnhvZ3hjQ2lDSnlUOApuVStmSTM2elViZWlOZlkyczdqWXRtSEFtMXdNWklmMjljNkNFU1cwZFVFNCtsK2diRG5McEk4ckFtZjhOYU51CjVsSHdpV2pPMHZHaFBjek91Y3Z2cmIvN0NQWGg2cEhkTGFIRno2UEgwY1Y2ZmY4MUJma2VyR29ndXpzT0lidkYKaEJBVjJvZ2xVTnVjdW9GVmJaOGhOdXZpc2JZNnBTNmtIZHlVQlo5ZmRwYStvN3pYWEUxTTNVY3lPZkZQT3BubQpQNTVweE9IVjZETzNOUGVjNGR3K2Y5QXFXZHNmd0lUUVhoMmlaTDh3aXgvWnV2OVM5bEpxTkMram5saG03QVJ4Cm1PNWtkY05WQWdNQkFBRUNnZ0VBVmIveWxTTVoxZFU3YjBndDVyYnliTnMyWitxaEZpbzVidVllY2toVkh6Z2kKNTQ1ZjNxYkJJUEM0bkxKSXVtT1dlWllhS0c2TG8wUUxNTWE2azVNYndpVFk2ZkFoeWJ3bEU2dmxaT3hwV25IMwo2T2JCWFhBcXpzTE5xZVVmZmhmNkJWWnViNW1SbWw3b3NCSUZjeDRFeFBKaTc4QXNXcjE4THN2b25vQ0FUdlBhCkVEaWFpQzM4dHBhWFBoUGM4Wi9SYjQzOUFLbEZPbWZORWw4a0cxUWk3MFJEZ3FtdDFUUzl5UW9lOTd4cll2ZFgKQlY0QVFHaUNRTm81WDV3elYvcitVQXdvZVhvdWdrN0tyNlF1RTJ0Ry9pUFc0UlNJaWZmZjZLS1VrYi9yb3BoSQo0S3Q4V0pqUEUvMXk4bDBVeEVrWHBDL3grS3Rad2gxR3hYQTc4UXhTb1FLQmdRRCtwdkpUeGw5MTlGYjQwdTFpClF6ZEdxUytaMkxMcEM0TmtGNVZ5cjFQd1ZzYm5GSGR5d0JMeXZQbjVUbmZmcWVaYTNRUGE3K2FTcFlhRndNYlMKVlgrTXNTTkFvY1FGSU5RTzB2K0pRQUZNcldFdUE5SkFMZGtTUC9ac3hIT0VCd2svQkRQZGJJTjJZZytBZkxmawpEbnhUeGo1U2k3bUNCSjRRWVVYWnRmQnBMUUtCZ1FEb3NTaC9JclBrOEhPZTVZMXdack9qN04wQVlHMjhEam90CjNCZUZXQzduMGxmYzBjTkhSN3VyS1FOTmpoQm91KzBseUVBclpESHFxa09pN3lYY1RXNzhQQlkzdVlYZ1BYeHAKYWZTdlVtM0g4ZDVlaTh4NlVKdzZkblhEZU9xSVg4dGl3enI1UE1ETkxlRmFRbU5Vbk9sTWhDU0h0aHJHeU0yaQpDMVpObzA5THlRS0JnQXdCcnhkSUdTUWtteDBzUk1rSFJrbnNuRFB5eGF5N1FEeXQ1L3Y2VEVqZXJvNGlwdWNnCkswU0txSGFhdm9ncktKTk1MR3hjTjFEZXdSTDVYZVo0NVlTcXJYRFVyN3RXS3Vsd0JXQmhSaTVwVmxXbkZIaTIKTUsvdG1CN1V2R1dUTjFwalJsYkFVUXA1NFNVN3ZDZmlqdlljT01BSG1uMkkzak1EZ3htYXZIVVpBb0dBZS8vTQpRTlBSWWJMeEtqL1J1NUEvTXAvS3RhU3RWWVdQWTFqaC8rRWFQZGROa3hNRktUc0V1eFZEK1ZRM1VsaXk2MnRuCkpyaGlFVmRpYTdWZFM2VEgvQXBaSEtEMHdxYUJZZnRndFAwTUczeThyMDE0VGNZZk90aGRzU2tDY21INkZFdE4KWmZ3R0VsRGN3aWlXbmtSdjNxS2NoT1Y2SjJ4aWlIUGFMYzFWT0dFQ2dZRUF5ODViUWZCaHd2dTNoV2RtZys0eAowcWxRbDFDVmdUZ2o3RjZldjB6UlYxM1kvQjRDQThrNzE2aGVqLzVlYld3U2JhQWp6akFqQlFtZ0hRdVFlL3ZkClE3RE5TeUtSb0NocU03d0lsRmcvMyt6OGdoTk9EeHNjKy80c0hYSVpncU5WRlFFZUNBTFVZbnhJVCtYQkhzaHgKeXBBaitWUWZBQTRmYjRJcnd0OXAySUE9Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUROekNDQWgrZ0F3SUJBZ0lVU0hTb3lJcndMVVBjdVc3UlI4dVk2ck1MRUo4d0RRWUpLb1pJaHZjTkFRRUwKQlFBd0t6RVlNQllHQTFVRUF3d1BiWEVnY1hWbGRXVnRZVzVoWjJWeU1ROHdEUVlEVlFRTERBWnBZbTBnYlhFdwpIaGNOTWpFd09ERTVNVGt4TnpNeVdoY05NekV3T0RFM01Ua3hOek15V2pBck1SZ3dGZ1lEVlFRRERBOXRjU0J4CmRXVjFaVzFoYm1GblpYSXhEekFOQmdOVkJBc01CbWxpYlNCdGNUQ0NBU0l3RFFZSktvWklodmNOQVFFQkJRQUQKZ2dFUEFEQ0NBUW9DZ2dFQkFPZDNoVklFNXhnYXdOQ08zU1Bla08vZno4aUJ2cjJON2dZTUxwdnZLbFJ0NUU3WApVMHh3MGNneTl5VzV4VEV4QjFIR2lERndLSUluSlB5ZFQ1OGpmck5SdDZJMTlqYXp1TmkyWWNDYlhBeGtoL2IxCnpvSVJKYlIxUVRqNlg2QnNPY3VranlzQ1ovdzFvMjdtVWZDSmFNN1M4YUU5ek02NXkrK3R2L3NJOWVIcWtkMHQKb2NYUG84ZlJ4WHA5L3pVRitSNnNhaUM3T3c0aHU4V0VFQlhhaUNWUTI1eTZnVlZ0bnlFMjYrS3h0anFsTHFRZAozSlFGbjE5MmxyNmp2TmRjVFV6ZFJ6STU4VTg2bWVZL25tbkU0ZFhvTTdjMDk1emgzRDUvMENwWjJ4L0FoTkJlCkhhSmt2ekNMSDltNi8xTDJVbW8wTDZPZVdHYnNCSEdZN21SMXcxVUNBd0VBQWFOVE1GRXdIUVlEVlIwT0JCWUUKRkswQUdPc2hmRStsemtKZk13UXpzMFd6WEY2RU1COEdBMVVkSXdRWU1CYUFGSzBBR09zaGZFK2x6a0pmTXdRegpzMFd6WEY2RU1BOEdBMVVkRXdFQi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFPUEFDOTFCCndNdmJZRkV4dmViVURNaVI0NGlGUkVXaU5ENmhDZlVqRnMrYXR5aFd2UDJ3NUR6Zm93VG55WjIvSTV5Mm80UDMKbVJ5SEtxWWJPbDJjVk4yWU9EeDA1WXNzMUoyc1RRb2UzaGd0bXRCcHZNbUMrV1dJRGlSR0d2S1BoV0lWVTBTbQpZT0E2NXQrclZsaUUwV0pHell1REJqNUdTZ05NMUI3NWlETTVXeS9mR0pDWkpkY1pCd2NFc3I0TWgxRmR0U1ZzCkFpRzBXQ0d3M3hVOEo5RUZHZmVpVzhXdTNtRndiNnlweis4QTRVS05vTS9ncFMvaFhHY2Z5TDc2WHF2WEczZGUKdU5PV0JrSXJYK1V2WTN3V2x1Qk5nNi9Kd24vcnR0bm1JMDJjQlFMb0cvRVVVa250Q3NiNm5WSzNSZHBWZUttbgovbXY0Yy9BYlYyV3ROKzg9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+  app.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUROekNDQWgrZ0F3SUJBZ0lVTWM3dEZ0TlZsL3MxQmRDNzhPaEZKejZtM0Uwd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0t6RVZNQk1HQTFVRUF3d01ZWEJ3YkdsallYUnBiMjR4TVJJd0VBWURWUVFMREFsaGNIQWdkR1ZoYlRFdwpIaGNOTWpFd09ERTVNVGt4TnpNeVdoY05NekV3T0RFM01Ua3hOek15V2pBck1SVXdFd1lEVlFRRERBeGhjSEJzCmFXTmhkR2x2YmpFeEVqQVFCZ05WQkFzTUNXRndjQ0IwWldGdE1UQ0NBU0l3RFFZSktvWklodmNOQVFFQkJRQUQKZ2dFUEFEQ0NBUW9DZ2dFQkFMU1pyNE0vcFBoRm1rVFFxbXdEb2tISGRIZlpWWm1FYnhzdDlzNGp1WWlsMS8vVgpVdTZaMU1TbHViV3dlK3hKTEEyZVVCRXAvemlTcXFtWmJnRmpEUFFhSk0xRHMva1FrNFFpNDcvOUVNMmNBVjdLCnZJNFVxaGRUZ3hOSndqeXp1ZFRIZTlzbzhxTXNCSXg3TzN6SlVZYWU1dytJMlRIRFovZ0dldi9GYzhKcU1lWjcKdXN6eUk4bmhuNnM2UTZtbVZqZUkwdjhDMzNwUVpNdkhLZXV2ZlFPTkU0V01KV3duUmVIVVdodXJVeGoyUU1kSgo3T0VoL2w4MmtNbndpOE5sK3pIQ21pbU84cnBVb0hIaUxSWFc5Y1dEZlI5VUFmblNBWnRRQmxIUVVJc2xuY0VoCmttRWJxb011c0NFOXBHSWVIZUhUOGlXeFZJMFgxdWg2WTZWNXl2Y0NBd0VBQWFOVE1GRXdIUVlEVlIwT0JCWUUKRkI1WDFIM0R4RGhPL2dJMFM1c1A2bTB6YkJEdk1COEdBMVVkSXdRWU1CYUFGQjVYMUgzRHhEaE8vZ0kwUzVzUAo2bTB6YkJEdk1BOEdBMVVkRXdFQi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFBYXhHeityCnROWWFGZGRlTG45WXVhdzM1QzJ6K3JWTlpzS0RXT3BKRmNpQU5Wc1Y2MHEwVk9lUGx4MzVFNmt0SXRhMTd4aHEKdzQ3aEp1V3NjOWtqS2JlN052czJNR2RvN2xCOEg0N0NleFpBQmt2alpodXREZDQ4cjVwZGpaUk53NGVwODZ3cgpZNVEybE1KVGF2MW9ZYTgzbC9HRWtHL2RZMjRDRGJwNVk0OUFFeWlaVzR2U2g1L2x4WXBWSTNrTVJJUVFPc2ZJCm1lbDQ2c3d3TE9VeUdUaGVXRXQ4TW5iRHp3TjVhSkRLRGlwSDVNWVVVTlR3dDJnYVNlZjQ5K2piZWF3MmhRamkKQk1XQm1ycG5JN1c1czczWUxvQUREQVRhOXVZWCtHaEpvdityNnlwZHQrYmljQ3JrbFZ3eSttRXRUcnljRFJqQQpPSk5oU1QrK2RGdWIzdkk9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+type: Opaque
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: custom-web-console-service-cp4i-ibm-mq
+  namespace: rp-sender
+spec:
+  ports:
+    - name: qmgr
+      protocol: TCP
+      port: 9443
+      targetPort: 9443
+  selector:
+    app.kubernetes.io/component: integration
+    app.kubernetes.io/instance: custom-web-console-cp4i
+    app.kubernetes.io/name: ibm-mq
+  type: ClusterIP
+  sessionAffinity: None
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: custom-web-console-route
+  namespace: rp-sender
+spec:
+  to:
+    kind: Service
+    name: custom-web-console-service-cp4i-ibm-mq
+  port:
+    targetPort: 9443
+  tls:
+    termination: passthrough
+  wildcardPolicy: None
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: customwebconfig
+  namespace: rp-sender
+data:
+  mqwebuser.xml: |-
+    <?xml version="1.0" encoding="UTF-8"?>
+    <server>
+    <!-- ****************************************************************** -->
+    <!--                                                                    -->
+    <!--  IBM MQ security configuration for MQ Console and REST API.        -->
+    <!--                                                                    -->
+    <!--  Name: basic_registry.xml                                          -->
+    <!--                                                                    -->
+    <!--  Description:  Basic XML based registry                            -->
+    <!--                                                                    -->
+    <!-- ****************************************************************** -->
+    <!-- <copyright                                                         -->
+    <!--     notice='lm-source-program'                                     -->
+    <!--     pids='5724-H72'                                                -->
+    <!--     years='2016,2018'                                              -->
+    <!--     crc='0' >                                                      -->
+    <!--                                                                    -->
+    <!--     Licensed Materials - Property of IBM                           -->
+    <!--                                                                    -->
+    <!--     5724-H72                                                       -->
+    <!--                                                                    -->
+    <!--     (C) Copyright IBM Corp. 2016, 2018 All Rights Reserved.        -->
+    <!--                                                                    -->
+    <!--     US Government Users Restricted Rights - Use, duplication or    -->
+    <!--     disclosure restricted by GSA ADP Schedule Contract with        -->
+    <!--     IBM Corp.                                                      -->
+    <!-- </copyright>                                                       -->
+    <!--
+    This sample grants the following role mappings:
+    1) MQWebAdmin role access to the 'MQWebAdminGroup' group. When a user is a
+    member of this group, all MQ commands issued by the MQ Console or
+    REST API use the security context of the operating system user running
+    the application server.
+    2) MQWebAdminRO role access to the 'mqreader' user. The 'mqreader' user
+    uses the security context of the operating system user running the
+    application server for all read-only MQ commands, such as DISPLAY
+    CHANNEL, QUEUE, etc, issued by the MQ Console or REST API.
+    3) MQWebUser role access to all authenticated users. This role is used
+    by authenticated users where no other role is applicable, for example
+    the 'mqreader' user attempting to define a new queue. All MQ commands
+    issued by the MQ Console or REST API uses the security context of the
+    principal and so the user must be known to the queue manager and authorized
+    to issue the command.
+    4) MFTWebAdmin role access to the 'mftadmin' user. The 'mftadmin' user
+    uses the security context of the operating system user running the
+    application server for all Managed File Transfer commands,
+    such as list agent, list transfer etc, issued by the REST API.
+    5) MFTWebAdminRO role access to the 'mftreader' user. The 'mftreader' user
+    uses the security context of the operating system user running the
+    application server for all read-only Managed File Transfer commands,
+    such as list agent, list transfer etc, issued by the REST API.
+    In addition the sample enables HTTP Basic Authentication.
+    -->
+    <!--
+    Enable features
+    -->
+    <featureManager>
+        <feature>appSecurity-2.0</feature>
+        <feature>basicAuthenticationMQ-1.0</feature>
+    </featureManager>
+
+    <!--
+    Roles for the MQ Console
+    -->
+    <enterpriseApplication id="com.ibm.mq.console">
+        <application-bnd>
+            <security-role name="MQWebAdmin">
+                <group name="MQWebAdminGroup" realm="defaultRealm"/>
+            </security-role>
+            <security-role name="MQWebAdminRO">
+                <group name="MQWebAdminROGroup" realm="defaultRealm"/>
+            </security-role>
+            <security-role name="MQWebUser">
+                <special-subject type="ALL_AUTHENTICATED_USERS"/>
+            </security-role>
+            <security-role name="MFTWebAdmin">
+                <user name="mftadmin" realm="defaultRealm"/>
+            </security-role>
+            <security-role name="MFTWebAdminRO">
+                <user name="mftreader" realm="defaultRealm"/>
+            </security-role>
+        </application-bnd>
+    </enterpriseApplication>
+
+    <!--
+    Roles for the MQ REST API
+    -->
+    <enterpriseApplication id="com.ibm.mq.rest">
+        <application-bnd>
+            <security-role name="MQWebAdmin">
+                <group name="MQWebAdminGroup" realm="defaultRealm"/>
+            </security-role>
+            <security-role name="MQWebAdminRO">
+                <user name="mqreader" realm="defaultRealm"/>
+            </security-role>
+            <security-role name="MQWebUser">
+                <special-subject type="ALL_AUTHENTICATED_USERS"/>
+            </security-role>
+            <security-role name="MFTWebAdmin">
+                <user name="mftadmin" realm="defaultRealm"/>
+            </security-role>
+            <security-role name="MFTWebAdminRO">
+                <user name="mftreader" realm="defaultRealm"/>
+            </security-role>
+        </application-bnd>
+    </enterpriseApplication>
+
+    <!--
+    Sample Basic Registry
+    -->
+    <basicRegistry id="basic" realm="defaultRealm">
+        <!--
+        This sample defines two users with unencoded passwords
+        and a group, these are used by the role mappings above.
+        -->
+        <user name="mqadmin" password="passw0rd"/>
+        <user name="mqreader" password="passw0rd"/>
+        <group name="MQWebAdminGroup">
+           <member name="mqadmin"/>
+        </group>
+        <group name="MQWebAdminROGroup">
+           <member name="mqreader"/>
+        </group>
+    </basicRegistry>
+
+    <!--
+    Enable HTTPS on a specific port by uncommenting the line below and providing the required port number.
+    -->
+    <variable name="httpsPort" value="9443"/>
+
+    <!--
+    By default the server listens for HTTP/HTTPS requests on localhost only. To
+    listen on all available network interfaces uncomment the line below. To listen
+    on a specific IP address or hostname replace the * with an appropriate value.
+    -->
+    <!--
+    <variable name="httpHost" value="*"/>
+    -->
+    <variable name="httpHost" value="*"/>
+
+    <!--
+    Default MQ SSL configuration allows TLS v1.2 ONLY, refer to the
+    IBM Knowledge Center section on "IBM MQ Console and REST API security"
+    for details of how to configure security.
+    -->
+    <sslDefault sslRef="mqDefaultSSLConfig"/>
+
+    <!--
+    Enable client certificate authentication by uncommenting the
+    block below and creating a trust.jks store. Basic registry
+    maps the common name (CN=) issued by a trusted CA to
+    users names in the registry. For example a certificate with
+    a distinguished name of 'CN=mqadmin,O=IBM,C=GB' will be granted
+    a MQWebAdmin role under the 'mqadmin' user.
+
+    The default, auto-generated certificate held in key.jks is
+    intended for developer convenience only, it is not intended for
+    production use.
+
+    Passwords for both defaultKeyStore and defaultTrustStore should
+    be changed and encoded using the securityUtility tool, refer
+    to the following developerWorks article for further information;
+
+    https://developer.ibm.com/wasdev/docs/configuring-ssl-liberty/
+    -->
+    <!--
+    <keyStore id="defaultKeyStore" location="key.jks" type="JKS" password="password"/>
+    <keyStore id="defaultTrustStore" location="trust.jks" type="JKS" password="password"/>
+    <ssl id="thisSSLConfig" clientAuthenticationSupported="true" keyStoreRef="defaultKeyStore" serverKeyAlias="default" trustStoreRef="defaultTrustStore" sslProtocol="TLSv1.2"/>
+    <sslDefault sslRef="thisSSLConfig"/>
+    -->
+
+    <!--
+    Uncomment the following two variables, and adjust them, to change
+    the default CORS settings.
+    -->
+    <!--
+    <variable name="mqRestCorsAllowedOrigins" value="https://localhost:9883"/>
+    <variable name="mqRestCorsMaxAgeInSeconds" value="120"/>
+    -->
+    <variable name="mqConsoleRemoteSupportEnabled" value="false"/>
+    <variable name="managementMode" value="externallyprovisioned"/>
+    <variable name="mqConsoleEnableUnsafeInline" value="true"/>
+    <jndiEntry jndiName="mqConsoleDefaultCCDTHostname" value="${env.MQ_CONSOLE_DEFAULT_CCDT_HOSTNAME}"/>
+    <jndiEntry jndiName="mqConsoleDefaultCCDTPort" value="${env.MQ_CONSOLE_DEFAULT_CCDT_PORT}"/>
+    <include location="tls.xml"/>
+    </server>
+---
+apiVersion: mq.ibm.com/v1beta1
+kind: QueueManager
+metadata:
+  name: custom-web-console-cp4i
+  namespace: rp-sender
+spec:
+  license:
+    accept: true
+    license: L-RJON-BZFQU2
+    use: NonProduction
+  pki:
+    keys:
+      - name: default
+        secret:
+          secretName: customwebcert
+          items:
+            - tls.key
+            - tls.crt
+            - app.crt
+  securityContext:
+    initVolumeAsRoot: false
+    supplementalGroups:
+      - 99
+  web:
+    enabled: false
+  version: 9.2.4.0-r1
+  template:
+    pod:
+      containers:
+        - env:
+            - name: MQ_ENABLE_EMBEDDED_WEB_SERVER
+              value: "true"
+          ports:
+            - containerPort: 9443
+              protocol: TCP
+          volumeMounts:
+            - name: mqwebuser
+              readOnly: true
+              mountPath: "/etc/mqm/web/installations/Installation1/servers/mqweb/mqwebuser.xml"
+              subPath: mqwebuser.xml
+          name: qmgr
+      volumes:
+        - name: mqwebuser
+          configMap:
+            name: customwebconfig
+            items:
+              - key: mqwebuser.xml
+                path: mqwebuser.xml
+            defaultMode: 420
+  queueManager:
+    resources:
+      limits:
+        cpu: 500m
+      requests:
+        cpu: 100m
+    name: QUICKSTART
+    ini:
+      - configMap:
+          name: customwebmqsc
+          items:
+            - mq.ini
+    mqsc:
+      - configMap:
+          name: customwebmqsc
+          items:
+            - mq.mqsc
+    availability:
+      type: SingleInstance
+      updateStrategy: RollingUpdate
+    storage:
+      defaultClass: ibmc-file-gold-gid
+      defaultDeleteClaim: true
+      persistedData:
+        class: ibmc-file-gold-gid
+        deleteClaim: true
+        enabled: true
+        size: 2Gi
+        type: persistent-claim
+      queueManager:
+        class: ibmc-file-gold-gid
+        deleteClaim: true
+        size: 2Gi
+        type: persistent-claim
+      recoveryLogs:
+        class: ibmc-file-gold-gid
+        deleteClaim: true
+        enabled: true
+        size: 2Gi
+        type: persistent-claim
