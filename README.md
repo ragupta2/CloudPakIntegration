@@ -13,3 +13,12 @@ This is a simple solution for having a bastion installation of IBM's Cloud Pak f
 - Signon to the target OCP environment using the `oc login` command, and then run the install script `/root/installcp4i.sh`.
 
 If all goes well, then the local registry will be populated with the CP4I images and the CatalogSources will be added pointing to those repositories.  
+
+
+```
+curl -i -k https://custom-web-console-route-rp-sender./ibmmq/rest/v1/messaging/qmgr/QUICKSTART/queue/APPQ/message -X POST -u <user>:<pass> -H "ibm-mq-rest-csrf-token: value" -H "Content-Type: application/json" --data "{\"msg\":\"hellowrold\"}"
+```
+```
+curl -i -k https://custom-web-console-route-rp-sender./ibmmq/rest/v1/messaging/qmgr/QUICKSTART/queue/APPQ/message -X DELETE -u <user>:<pass> -H "ibm-mq-rest-csrf-token: blank"
+
+```
