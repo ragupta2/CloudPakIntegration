@@ -18,7 +18,7 @@ spec:
         name: default
     trust:
       - secret:
-          items: 
+          items:
             - tls.crt
           secretName: sender-mq-tls-secret
         name: sender
@@ -30,7 +30,7 @@ spec:
       containers:
         - env:
             - name: MQSNOAUT
-              value: 'yes'
+              value: "yes"
           name: qmgr
   queueManager:
     resources:
@@ -45,26 +45,20 @@ spec:
             - receiver-tls.mqsc
           name: mq-receiver-tls-configmap
     availability:
-      type: SingleInstance
+      type: NativeHA
     storage:
+      defaultClass: ibmc-block-gold
+      persistedData:
+        class: ibmc-block-gold
+        deleteClaim: true
+        enabled: true
+        type: persistent-claim
       queueManager:
-        type: ephemeral
-    # storage:
-    #   defaultClass: ibmc-block-gold
-    #   persistedData:
-    #     class: ibmc-block-gold
-    #     deleteClaim: true
-    #     enabled: true
-    #     size: 2Gi
-    #     type: persistent-claim
-    #   queueManager:
-    #     class: ibmc-block-gold
-    #     deleteClaim: true
-    #     type: persistent-claim
-    #     size: 2Gi
-    #   recoveryLogs:
-    #     class: ibmc-block-gold
-    #     deleteClaim: true
-    #     enabled: true
-    #     type: persistent-claim
-    #     size: 2Gi
+        class: ibmc-block-gold
+        deleteClaim: true
+        type: persistent-claim
+      recoveryLogs:
+        class: ibmc-block-gold
+        deleteClaim: true
+        enabled: true
+        type: persistent-claim

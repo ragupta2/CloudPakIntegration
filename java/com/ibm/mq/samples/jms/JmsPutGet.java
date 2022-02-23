@@ -23,10 +23,12 @@ import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.JMSProducer;
 import javax.jms.TextMessage;
+import javax.jms.DeliveryMode;
 
 import com.ibm.msg.client.jms.JmsConnectionFactory;
 import com.ibm.msg.client.jms.JmsFactoryFactory;
 import com.ibm.msg.client.wmq.WMQConstants;
+
 
 public class JmsPutGet {
 
@@ -77,7 +79,9 @@ public class JmsPutGet {
 			// Create JMS objects
 			context = cf.createContext();
 			destination = context.createQueue("queue:///" + QUEUE_NAME);
-			producer = context.createProducer();
+			// producer = context.createProducer();
+			producer = context.createProducer().setDeliveryMode(DeliveryMode.PERSISTENT).setTimeToLive(1000);
+
 
 			while (true){
 				long uniqueNumber = System.currentTimeMillis() % 1000;

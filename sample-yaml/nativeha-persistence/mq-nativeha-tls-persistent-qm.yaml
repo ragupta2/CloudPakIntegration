@@ -54,22 +54,3 @@ spec:
         deleteClaim: true
         enabled: true
         type: persistent-claim
-    availability:
-      type: NativeHA
-    storage:
-      defaultClass: ibmc-block-gold
-      persistedData:
-        class: ibmc-block-gold
-        deleteClaim: true
-        enabled: true
-        type: persistent-claim
-      queueManager:
-        class: ibmc-block-gold
-        enabled: true
-        type: persistent-claim
-        deleteClaim: true
-      recoveryLogs:
-        class: ibmc-block-gold
-        enabled: true
-        type: persistent-claim
-        deleteClaim: true
