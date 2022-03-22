@@ -8,7 +8,6 @@ For example, currently "put" program is sending sample messages constantly in a 
 ```
 git clone https://github.com/ragupta2/CloudPakIntegration.git
 cd CloudPakIntegration/java
-
 ```
 
 - Copy your truststore certificate (JKS) in `certs/` and name it `mq-java-tls.jks`
@@ -18,7 +17,6 @@ cd CloudPakIntegration/java
 
 ```
 docker build -t mq-java-app -f Dockerfile.put .
-
 ```
 
 ```
