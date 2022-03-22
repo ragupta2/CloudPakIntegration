@@ -4,6 +4,27 @@ WORKDIR /app
 
 COPY . .
 
+# ENV CONN_STR="<hostname>(<port>)"
+# ENV QMGR="<QueueManager Name>"
+# ENV QUEUE_NAME="<Queue Name>"
+# # ENV TOPIC="PUBSUB.TOPIC"
+# ENV CHANNEL="<Server Conn Channel>"
+# # ENV TOPIC_NAME="PUBSUB.TOPIC"
+# ENV CIPHER_SUITE="<cipher spec>"
+# ENV APP_USER="app"
+# ENV APP_PASSWORD="password"
+
+ENV CONN_STR="mq-tls-ibm-mq-qm-ace.itzroks-550004s7y8-ejnuty-4b4a324f027aea19c5cbc0c3275c4656-0000.us-south.containers.appdomain.cloud(443)"
+ENV QMGR="QUICKSTART"
+ENV QUEUE_NAME="APPQ"
+# ENV TOPIC="PUBSUB.TOPIC"
+ENV CHANNEL="EXTERNAL.CONN"
+# ENV TOPIC_NAME="PUBSUB.TOPIC"
+ENV CIPHER_SUITE="ANY_TLS12"
+ENV APP_USER="app"
+ENV APP_PASSWORD="password"
+
+
 RUN javac -cp ./com.ibm.mq.allclient-9.2.4.0.jar:./javax.jms-api-2.0.1.jar:./org.json-20120521.jar com/ibm/mq/samples/jms/JmsPutGet.java
 
 CMD ["java", "-Djavax.net.ssl.trustStoreType=jks", "-Djavax.net.ssl.trustStore=/app/certs/mq-java-tls.jks", "-Djavax.net.ssl.trustStorePassword=password", "-Dcom.ibm.mq.cfg.useIBMCipherMappings=false", "-cp", "./com.ibm.mq.allclient-9.2.4.0.jar:./javax.jms-api-2.0.1.jar:./org.json-20120521.jar:.","com.ibm.mq.samples.jms.JmsPutGet"]
