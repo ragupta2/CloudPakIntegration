@@ -11,7 +11,7 @@ cd CloudPakIntegration/java
 
 ```
 
-- Copy your truststore certificate (JKS) in `certs/` then build and run your container
+- Copy your truststore certificate (JKS) in `certs/` and name it `mq-java-tls.jks`
 - Edit truststore password in your Dockerfile in CMD argument with key `-Djavax.net.ssl.trustStorePassword=`
 - Edit Dockerfile to use your queue manager details
   - If you are not using credentials or cipherSuite then comment out those configurations in `com/ibm/mq/samples/jms/JMSPutGet.java` on lines (75, 76, 77)
